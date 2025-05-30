@@ -2,6 +2,10 @@ const fs = require("fs");
 const http = require("http");
 const url = require("url");
 
+// Top level code that only execute once we start the program
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const dataObj = JSON.parse(data);
+
 //  Create the server
 const server = http.createServer((req, res) => {
   const pathName = req.url;
@@ -11,7 +15,8 @@ const server = http.createServer((req, res) => {
   } else if (pathName === "/products") {
     res.end("hello from the products");
   } else if (pathName === "/api") {
-    fs.readFile("./starter/");
+    res.writeHead(200, { "Content-type": "application/json" });
+    res.end(data);
   } else {
     res.writeHead(404, {
       "Content-type": "text/html",
